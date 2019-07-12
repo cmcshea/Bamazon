@@ -1,5 +1,5 @@
 {
-  "name": "Bamazon",
+  "name": "bamazon",
   "version": "1.0.0",
   "description": "Amazon-like storefront using MySQL and Node.js",
   "main": "bamazonCustomer.js",
