@@ -2,6 +2,7 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+
 //create mysql connection object
 var connection = mysql.createConnection({
     host: "localhost",
@@ -14,10 +15,65 @@ var connection = mysql.createConnection({
 //connect to MySQL
 connection.connect(function (err) {
     if (err) throw err;
-    console.log("connected as id "+ connection);
-    // runSearch();
+    console.log("Connected at: " + connection.threadId);
+    runSearch();
 });
 
+function runSearch() {
+    connection.query("SELECT * FROM products", function (err, data) {
+        if (err) throw err;
+        console.table(data)
+        BuyOrSell(data)
+    })
+};
+
+function BuyOrSell(dbData) {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "itemId",
+                message: "What Item Id would you like to purchase?",
+                validate: function (val) {
+                    return !isNaN(val)
+                }
+            },
+            {
+                type: "input",
+                name: "quantity",
+                message: "How many would you like to purchase?",
+                validate: function (val) {
+                    return !isNaN(val)
+                },
+            }
+
+        ]).then(function (answers) {
+            console.log(answers)
+            lowerInventory(dbData, answers.itemId, answers.quantity)
+        })
+}
+
+function getItemfromDb (dbData, id){
+    var item;
+    for(var i = 0; i < dbData.length; i++){
+        if(dbData[i].item_id === parseInt(id)){
+            item = dbData[i]
+        }
+    }
+    return item;
+}
+
+function lowerInventory (dbData, id, quantity) {
+    var item = getItemfromDb(dbData, id);
+    
+    if(item.stock_quantity > parseInt(quantity)){
+        console.log("Build mySQL function here")
+        
+    } else {
+        console.log("Not enough in inventory");
+        BuyOrSell(dbData)
+    }
+}
 //Run app in order to display all items for sale, including id, name, and prices
 
 //prompt user with 2 messages:
