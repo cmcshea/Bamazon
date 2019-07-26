@@ -67,7 +67,8 @@ function lowerInventory (dbData, id, quantity) {
     var item = getItemfromDb(dbData, id);
     
     if(item.stock_quantity > parseInt(quantity)){
-        console.log("Build mySQL function here")
+        console.log("Your total for " + "(" + answers.quantity + ")" + " - " + answers.item + " is: ")
+        
         
     } else {
         console.log("Not enough in inventory");
