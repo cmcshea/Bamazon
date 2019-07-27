@@ -63,11 +63,11 @@ function getItemfromDb (dbData, id){
     return item;
 }
 
-function lowerInventory (dbData, id, quantity) {
+function lowerInventory (dbData, id, quantity, product) {
     var item = getItemfromDb(dbData, id);
     
     if(item.stock_quantity > parseInt(quantity)){
-        console.log("Your total for " + "(" + answers.quantity + ")" + " - " + answers.item + " is: ")
+        console.log("Your total for " + "(" + quantity + ")" + product + "  " + id + " is: ")
         
         
     } else {
