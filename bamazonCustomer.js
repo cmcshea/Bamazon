@@ -49,25 +49,41 @@ function BuyOrSell(dbData) {
 
         ]).then(function (answers) {
             console.log(answers)
-            lowerInventory(dbData, answers.itemId, answers.quantity)
+            lowerInventory(dbData, answers)
         })
 }
 
 function getItemfromDb (dbData, id){
+    console.log("IAM IN THE FUNCTION")
     var item;
     for(var i = 0; i < dbData.length; i++){
+        console.log("ID:  ", id);
+        console.log("i:  ", i);
+        console.log(i===id);
         if(dbData[i].item_id === parseInt(id)){
             item = dbData[i]
         }
     }
+    console.log("ITEM:", item);
     return item;
 }
 
-function lowerInventory (dbData, id, quantity, product) {
-    var item = getItemfromDb(dbData, id);
+function lowerInventory (dbData, custOrder) {
+    var orderId = custOrder.itemId;
+    var stockInfo = getItemfromDb(dbData, orderId);
+    var stockQuantity = stockInfo.stock_quantity;
+    var name = stockInfo.product_name;
+    var price = stockInfo.price * 1;
+    var purchaseQuantity = custOrder.quantity * 1;
+    var totalPrice = price * purchaseQuantity;
+    // var item = getItemfromDb(dbData, id);
+    console.log(price);
+    console.log(totalPrice);
+    console.log(purchaseQuantity)
+ 
     
-    if(item.stock_quantity > parseInt(quantity)){
-        console.log("Your total for " + "(" + quantity + ")" + product + "  " + id + " is: ")
+    if(stockQuantity >= parseInt(purchaseQuantity)){
+        console.log("Your total for " + "(" + purchaseQuantity + ")" + " + " + name + " is: " + totalPrice)
         
         
     } else {
