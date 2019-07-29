@@ -54,17 +54,16 @@ function BuyOrSell(dbData) {
 }
 
 function getItemfromDb (dbData, id){
-    console.log("IAM IN THE FUNCTION")
     var item;
     for(var i = 0; i < dbData.length; i++){
-        console.log("ID:  ", id);
-        console.log("i:  ", i);
-        console.log(i===id);
+        // console.log("ID:  ", id);
+        // console.log("i:  ", i);
+        // console.log(i===id);
         if(dbData[i].item_id === parseInt(id)){
             item = dbData[i]
         }
     }
-    console.log("ITEM:", item);
+    // console.log("ITEM:", item);
     return item;
 }
 
@@ -77,13 +76,13 @@ function lowerInventory (dbData, custOrder) {
     var purchaseQuantity = custOrder.quantity * 1;
     var totalPrice = price * purchaseQuantity;
     // var item = getItemfromDb(dbData, id);
-    console.log(price);
-    console.log(totalPrice);
-    console.log(purchaseQuantity)
+    // console.log(price);
+    // console.log(totalPrice);
+    // console.log(purchaseQuantity)
  
     
     if(stockQuantity >= parseInt(purchaseQuantity)){
-        console.log("Your total for " + "(" + purchaseQuantity + ")" + " + " + name + " is: " + totalPrice)
+        console.log("Your total for " + "(" + purchaseQuantity + ")" + " - " + name + " is:" + " $" + totalPrice)
         
         
     } else {
