@@ -49,17 +49,50 @@ function BuyOrSell(dbData) {
 
         ]).then(function (answers) {
             console.log(answers)
-            lowerInventory(dbData, answers)
+// lowerInventory(dbData, custOrder) {
+    var orderId = answers.itemId;
+    var stockInfo = getItemfromDb(dbData, orderId);
+    var stockQuantity = stockInfo.stock_quantity;
+    var name = stockInfo.product_name;
+    var price = stockInfo.price * 1;
+    var purchaseQuantity = answers.quantity * 1;
+    var totalPrice = price * purchaseQuantity;
+    // var item = getItemfromDb(dbData, id);
+    // console.log(price);
+    // console.log(totalPrice);
+    // console.log(purchaseQuantity)
+
+
+// }
+
+            if (stockQuantity >= parseInt(purchaseQuantity)) {
+                console.log("Your total for " + "(" + purchaseQuantity + ")" + " - " + name + " is:" + " $" + totalPrice);
+                var changedValue = stockQuantity - purchaseQuantity;
+                console.log("changedVal:  ", changedValue)
+                connection.query("UPDATE products SET ? WHERE ?", [
+                    {stock_quantity: changedValue},
+                     {item_id: orderId}
+            ], function (err, res) {
+                    if (err) throw err;
+                    runSearch()
+                });
+        
+            } else {
+                console.log("Not enough in inventory");
+                runSearch()
+            }
+            // connection.end();
         })
+   
 }
 
-function getItemfromDb (dbData, id){
+function getItemfromDb(dbData, id) {
     var item;
-    for(var i = 0; i < dbData.length; i++){
+    for (var i = 0; i < dbData.length; i++) {
         // console.log("ID:  ", id);
         // console.log("i:  ", i);
         // console.log(i===id);
-        if(dbData[i].item_id === parseInt(id)){
+        if (dbData[i].item_id === parseInt(id)) {
             item = dbData[i]
         }
     }
@@ -67,29 +100,9 @@ function getItemfromDb (dbData, id){
     return item;
 }
 
-function lowerInventory (dbData, custOrder) {
-    var orderId = custOrder.itemId;
-    var stockInfo = getItemfromDb(dbData, orderId);
-    var stockQuantity = stockInfo.stock_quantity;
-    var name = stockInfo.product_name;
-    var price = stockInfo.price * 1;
-    var purchaseQuantity = custOrder.quantity * 1;
-    var totalPrice = price * purchaseQuantity;
-    // var item = getItemfromDb(dbData, id);
-    // console.log(price);
-    // console.log(totalPrice);
-    // console.log(purchaseQuantity)
- 
-    
-    if(stockQuantity >= parseInt(purchaseQuantity)){
-        console.log("Your total for " + "(" + purchaseQuantity + ")" + " - " + name + " is:" + " $" + totalPrice)
-        
-        
-    } else {
-        console.log("Not enough in inventory");
-        BuyOrSell(dbData)
-    }
-}
+
+
+
 //Run app in order to display all items for sale, including id, name, and prices
 
 //prompt user with 2 messages:
