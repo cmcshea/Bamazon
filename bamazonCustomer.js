@@ -49,41 +49,41 @@ function BuyOrSell(dbData) {
 
         ]).then(function (answers) {
             console.log(answers)
-// lowerInventory(dbData, custOrder) {
-    var orderId = answers.itemId;
-    var stockInfo = getItemfromDb(dbData, orderId);
-    var stockQuantity = stockInfo.stock_quantity;
-    var name = stockInfo.product_name;
-    var price = stockInfo.price * 1;
-    var purchaseQuantity = answers.quantity * 1;
-    var totalPrice = price * purchaseQuantity;
-    // var item = getItemfromDb(dbData, id);
-    // console.log(price);
-    // console.log(totalPrice);
-    // console.log(purchaseQuantity)
+            // lowerInventory(dbData, custOrder) {
+            var orderId = answers.itemId;
+            var stockInfo = getItemfromDb(dbData, orderId);
+            var stockQuantity = stockInfo.stock_quantity;
+            var name = stockInfo.product_name;
+            var price = stockInfo.price * 1;
+            var purchaseQuantity = answers.quantity * 1;
+            var totalPrice = price * purchaseQuantity;
+            // var item = getItemfromDb(dbData, id);
+            // console.log(price);
+            // console.log(totalPrice);
+            // console.log(purchaseQuantity)
 
 
-// }
+            // }
 
             if (stockQuantity >= parseInt(purchaseQuantity)) {
                 console.log("Your total for " + "(" + purchaseQuantity + ")" + " - " + name + " is:" + " $" + totalPrice);
                 var changedValue = stockQuantity - purchaseQuantity;
                 console.log("changedVal:  ", changedValue)
                 connection.query("UPDATE products SET ? WHERE ?", [
-                    {stock_quantity: changedValue},
-                     {item_id: orderId}
-            ], function (err, res) {
+                    { stock_quantity: changedValue },
+                    { item_id: orderId }
+                ], function (err, res) {
                     if (err) throw err;
                     runSearch()
                 });
-        
+
             } else {
                 console.log("Not enough in inventory");
                 runSearch()
             }
             // connection.end();
         })
-   
+
 }
 
 function getItemfromDb(dbData, id) {
@@ -99,19 +99,3 @@ function getItemfromDb(dbData, id) {
     // console.log("ITEM:", item);
     return item;
 }
-
-
-
-
-//Run app in order to display all items for sale, including id, name, and prices
-
-//prompt user with 2 messages:
-//1) ask them ID of product they would like to buy
-//2) ask how many units they would like to buy
-
-//Once order is placed, app checks if store has enough in stock (from stock_quantity)
-//if not, display "Insufficent quantity!" and prevent order from going through
-
-//If enough in stock, update SQL database to reflect remaining quantity
-
-//When purchase is complete, show customer total cost
