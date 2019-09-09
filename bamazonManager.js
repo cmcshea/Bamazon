@@ -62,15 +62,36 @@ function productsForSale(){
 };
 
 function lowInventory() {
+    console.log("Products with Low Inventory:")
+
     connection.query("SELECT * FROM products", function (err, data) {
         if (err) throw err;
 
         for(var i = 0; i < data.length; i++) {
             if(data[i].stock_quantity <=5){
                 console.table(data[i])
-            }
-        }
-       
-        // BuyOrSell(data)
-    })
+            };
+        };
+    });
+};
+
+function addInventory() {
+    inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "inventory",
+        message: "Add more",
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+
+    }])
+    connection.query("SELECT * FROM products", function (err, data) {
+        if (err) throw err;
+
+        for(var i = 0; i < data.length; i++) {
+            if(data[i].stock_quantity <=5){
+                console.table(data[i])
+            };
+        };
+    });
 };
